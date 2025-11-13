@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 4),
 
                   Text(
-                    'Li ChengQian@gmail.com',
+                    'Litchy@gmail.com',
                     style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
 
