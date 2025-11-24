@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Kleme/views/widget_tree.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -20,15 +21,18 @@ class LoginPage extends StatelessWidget {
                       fontSize: 40,
                       color: Color.fromARGB(255, 51, 113, 78),
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 20,
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 20),
-                Image.asset("assets/images/welcome_pic.png", width: 240),
               ],
             ),
-
+            Container(
+              width: 400,
+              height: 400,
+              margin: const EdgeInsets.only(top: 25),
+              child: Lottie.asset('assets/lotties/Coffee_Red.json'),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(

@@ -3,13 +3,10 @@ import 'package:Kleme/data/notifier.dart';
 import 'package:Kleme/views/widgets/navbar_widget.dart';
 import 'package:Kleme/views/pages/home_page.dart';
 import 'package:Kleme/views/pages/profile_page.dart';
+import 'package:Kleme/views/pages/recipe_page.dart';
+import 'package:Kleme/views/pages/chat_page.dart';
 
-List<Widget> pages = [
-  MainHomePage(),
-  ProfilePage(),
-  ProfilePage(),
-  ProfilePage(),
-];
+List<Widget> pages = [MainHomePage(), RecipePage(), ChatPage(), ProfilePage()];
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({super.key});

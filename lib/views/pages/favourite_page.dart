@@ -17,16 +17,16 @@ class _FavouritePageState extends State<FavouritePage> {
           title: Text('Favourites'),
           bottom: TabBar(
             tabs: [
-              Tab(text: 'Milk Tea'),
               Tab(text: 'Cocktail'),
+              Tab(text: 'Milk Tea'),
               Tab(text: 'Coffee'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Center(child: Text('Milk Tea')),
             Center(child: Text('Cocktail')),
+            Center(child: Text('Milk Tea')),
             Center(child: Text('Coffee')),
           ],
         ),

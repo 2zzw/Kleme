@@ -1,3 +1,4 @@
+import 'package:Kleme/views/pages/recipe_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Kleme/data/notifier.dart';
 import 'package:Kleme/views/pages/detail_page.dart';
@@ -17,25 +18,26 @@ class _MainHomePageState extends State<MainHomePage> {
   List<String> categories = ['All', 'Milk Tea', 'Cocktail', 'Coffee'];
   List<Map<String, dynamic>> recipes = [
     {
+      'title': 'Cocktails',
+      'image':
+          'https://th.bing.com/th/id/OIP.-eq4T8xMDRZwhDQFRMm_sAHaHa?w=183&h=183&c=7&r=0&o=7&dpr=2.2&pid=1.7&rm=3',
+      'views': '600 views',
+      'time': '3 min',
+    },
+    {
       'title': 'Milk Tea',
       'image':
           'https://th.bing.com/th/id/OIP.OO2s5d4RhTmQrcPoElNVcwHaLH?w=115&h=180&c=7&r=0&o=7&dpr=2.2&pid=1.7&rm=3',
-      'time': '10 min',
       'views': '100 views',
+      'time': '3 min',
     },
-    {
-      'title': 'Cocktail',
-      'image':
-          'https://th.bing.com/th/id/OIP.-eq4T8xMDRZwhDQFRMm_sAHaHa?w=183&h=183&c=7&r=0&o=7&dpr=2.2&pid=1.7&rm=3',
-      'time': '10 min',
-      'views': '100 views',
-    },
+
     {
       'title': 'Coffee',
       'image':
           'https://th.bing.com/th/id/OIP.GyL5Y1dFW96CGltb8UjDkgHaJN?w=128&h=180&c=7&r=0&o=7&dpr=2.2&pid=1.7&rm=3',
-      'time': '10 min',
       'views': '100 views',
+      'time': '3 min',
     },
   ];
   List<Map<String, dynamic>> recommendations = [
@@ -47,9 +49,9 @@ class _MainHomePageState extends State<MainHomePage> {
       'star': '3.5',
     },
     {
-      'title': 'Prickly Pink Margarita',
+      'title': 'Piper Plane',
       'image':
-          'https://www.thecocktailproject.com/sites/default/files/styles/recipe_main_img/public/Untitled-1.jpg.webp?itok=1tK4jF-X',
+          'https://cdn.diffordsguide.com/cocktail/Ov2jPO/default/0/512x.webp',
       'time': '10 min',
       'star': '4',
     },
@@ -76,17 +78,7 @@ class _MainHomePageState extends State<MainHomePage> {
           constraints: const BoxConstraints(minHeight: 40, maxHeight: 40),
           suggestionsBuilder:
               (BuildContext context, SearchController controller) {
-                return List<ListTile>.generate(5, (int index) {
-                  final String item = 'item $index';
-                  return ListTile(
-                    title: Text(item),
-                    onTap: () {
-                      setState(() {
-                        controller.closeView(item);
-                      });
-                    },
-                  );
-                });
+                return [];
               },
         ),
         actions: [
@@ -132,21 +124,17 @@ class _MainHomePageState extends State<MainHomePage> {
             height: 400,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SizedBox(
-              height: 320, // 控制整体高度
+              height: 320,
               child: CarouselView.weighted(
                 flexWeights: const [4, 1],
                 consumeMaxWeight: true,
                 shrinkExtent: MediaQuery.of(context).size.width * 0.85,
                 enableSplash: false,
                 onTap: (index) {
-                  final recipe = recipes[index];
-                  final tag = 'recipe_${recipe['title']}';
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) =>
-                          RecipeDetailPage(recipe: recipe, tag: tag),
+                      builder: (_) => RecipePage(initialIndex: index),
                     ),
                   );
                 },
@@ -182,15 +170,12 @@ class _MainHomePageState extends State<MainHomePage> {
               itemBuilder: (context, index) {
                 final recommendation = recommendations[index];
                 return InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => RecipeDetailPage(
-                        recipe: recommendation,
-                        tag: 'recommendation_${recommendation['title']}',
-                      ),
-                    ),
-                  ),
+                  // onTap: () => Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => RecipeDetailPage(data: recommendation),
+                  //   ),
+                  // ),
                   child: ListTile(
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
@@ -198,7 +183,7 @@ class _MainHomePageState extends State<MainHomePage> {
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
-                        image: NetworkImage(recommendation['image']!, scale: 1),
+                        image: NetworkImage(recommendation['image']!, scale: 2),
                       ),
                     ),
                     title: Text(
@@ -233,42 +218,52 @@ Widget _buildHeroCard(BuildContext context, Map<String, dynamic> recipe) {
 
   return Hero(
     tag: tag,
-    transitionOnUserGestures: true,
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(20),
+    child: Container(
+      width: MediaQuery.of(context).size.width * 0.85,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        image: DecorationImage(
+          image: NetworkImage(recipe['image']),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Stack(
-        fit: StackFit.expand,
         children: [
-          Image.network(recipe['image']!, fit: BoxFit.cover),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black.withValues(alpha: 0.6),
-                  Colors.transparent,
-                ],
-                begin: Alignment.bottomCenter,
-                end: Alignment.center,
-              ),
-            ),
-            padding: const EdgeInsets.all(16),
-            alignment: Alignment.bottomLeft,
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 16,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  recipe['title']!,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      recipe['title'],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  '${recipe['time']} • ${recipe['views']}',
-                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+
+                const SizedBox(height: 8),
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: Text(
+                    '${recipe['time']} • ${recipe['views']}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
                 ),
               ],
             ),
