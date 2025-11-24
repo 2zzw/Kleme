@@ -1,5 +1,7 @@
+import 'package:Kleme/data/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:Kleme/data/notifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -28,7 +30,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         ? const WidgetStatePropertyAll(Icon(Icons.dark_mode))
                         : const WidgetStatePropertyAll(Icon(Icons.light_mode)),
                     value: value,
-                    onChanged: (value) {
+                    onChanged: (value) async {
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setBool(KConstants.themeNotifierKey, value);
                       themeNotifier.value = value;
                     },
                   );
@@ -48,7 +53,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       DropdownMenuItem(value: 'zh', child: Text('中文')),
                     ],
                     value: value,
-                    onChanged: (value) {
+                    onChanged: (value) async {
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString(
+                        KConstants.languageNotifierKey,
+                        value!,
+                      );
                       languageNotifier.value = value!;
                     },
                   );

@@ -1,15 +1,34 @@
+import 'package:Kleme/data/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:Kleme/views/pages/login_page.dart';
 import 'package:Kleme/data/notifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    _loadTheme();
+  }
+
+  void _loadTheme() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool theme = prefs.getBool(KConstants.themeNotifierKey) ?? false;
+    themeNotifier.value = theme;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
