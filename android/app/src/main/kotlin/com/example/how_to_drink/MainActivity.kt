@@ -1,4 +1,4 @@
-package com.example.how_to_drink
+package com.example.kleme
 
 import io.flutter.embedding.android.FlutterActivity
 
