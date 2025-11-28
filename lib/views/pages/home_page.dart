@@ -1,7 +1,6 @@
 import 'package:Kleme/views/pages/recipe_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Kleme/data/notifier.dart';
-import 'package:Kleme/views/pages/detail_page.dart';
 import 'package:Kleme/views/pages/favourite_page.dart';
 
 // Home Search

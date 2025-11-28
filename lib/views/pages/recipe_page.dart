@@ -182,16 +182,14 @@ class WaterfallList extends StatelessWidget {
 }
 
 class RecipeCard extends StatelessWidget {
-  final Recipe data; // 这里类型变成了 Recipe
+  final Recipe data;
 
   const RecipeCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    // 保持之前的 UI 布局不变，只是取值方式从 map['key'] 变成了 data.property
     return GestureDetector(
       onTap: () {
-        // 跳转时可能需要把 Model 转回 Map 或者让详情页也支持 Model
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => RecipeDetailPage(data: data)),
@@ -218,27 +216,25 @@ class RecipeCard extends StatelessWidget {
                 top: Radius.circular(12),
               ),
               child: Hero(
-                tag: data.id, // Hero 动画，连接列表页和详情页
+                tag: data.id,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(12),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: data.image, // 你的图片 URL
+                    imageUrl: data.image,
                     fit: BoxFit.cover,
 
-                    // A. 占位图：当图片正在下载时，显示一个灰色的“骨架屏”动画
                     placeholder: (context, url) => Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
                       child: Container(
-                        height: 150, // 设置一个默认高度，防止布局跳动
+                        height: 150,
                         width: double.infinity,
                         color: Colors.white,
                       ),
                     ),
 
-                    // B. 错误图：如果图片 404 或者断网，显示这个
                     errorWidget: (context, url, error) => Container(
                       height: 150,
                       color: Colors.grey[200],
@@ -255,7 +251,6 @@ class RecipeCard extends StatelessWidget {
                       ),
                     ),
 
-                    // C. 动画效果：加载完成后，图片会淡入，而不是生硬地弹出
                     fadeInDuration: const Duration(milliseconds: 500),
                   ),
                 ),
@@ -277,19 +272,16 @@ class RecipeCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 6),
-                  // 标签行
                   Wrap(
                     spacing: 4,
                     runSpacing: 4,
                     children: [
-                      // 如果有 strength 数据
                       if (data.strength.isNotEmpty)
                         _buildMiniTag(
                           data.strength.toString().split(' ').last,
                           Colors.orange.shade50,
                           Colors.orange,
                         ),
-                      // 稍微展示一点描述
                       if (data.sweetSour.isNotEmpty)
                         _buildMiniTag(
                           data.sweetSour,
@@ -299,7 +291,6 @@ class RecipeCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  // 底部栏：点赞 icon 等
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

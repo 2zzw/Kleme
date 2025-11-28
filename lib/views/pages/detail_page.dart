@@ -50,14 +50,13 @@ class RecipeDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   _buildStepsList(context, steps),
-                  const SizedBox(height: 40), // 底部留白
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
           ),
         ],
       ),
-      // 悬浮按钮：收藏
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.favorite_border),
@@ -65,16 +64,15 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // 1. 视差滚动头部
   Widget _buildSliverAppBar(
     BuildContext context,
     String title,
     String imageUrl,
   ) {
     return SliverAppBar(
-      expandedHeight: 300.0, // 图片展开高度
-      pinned: true, // 上滑时是否固定在顶部
-      stretch: true, // 允许下拉放大
+      expandedHeight: 300.0,
+      pinned: true,
+      stretch: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
@@ -102,7 +100,6 @@ class RecipeDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-            // 添加一个渐变遮罩，保证文字在浅色图片上也清晰可见
             const DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -129,7 +126,6 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // 2. 标题与口味标签
   Widget _buildTitleSection(String title, String strength, String sweetSour) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,18 +160,15 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // 3. 重构后的详情展示组件
   Widget _buildInfoChips(
     String nutrition,
-    List<String> alcoholList, // 注意：这里改为 List<String>
+    List<String> alcoholList,
     String description,
     String glass,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // --- 1. 描述区域 (Description) ---
-        // 使用 Quote 风格，增加一点设计感
         Container(
           padding: const EdgeInsets.only(left: 12, bottom: 8),
           decoration: BoxDecoration(
@@ -187,25 +180,23 @@ class RecipeDetailPage extends StatelessWidget {
             description,
             style: TextStyle(
               fontSize: 15,
-              height: 1.6, // 增加行高，提升长文本阅读体验
+              height: 1.6,
               color: Colors.grey.shade800,
-              fontStyle: FontStyle.italic, // 斜体增加叙事感
+              fontStyle: FontStyle.italic,
             ),
           ),
         ),
 
         const SizedBox(height: 20),
 
-        // --- 2. 核心参数卡片 (Glass & Nutrition) ---
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            // 增加轻微的阴影，制造层级感
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: 0.03),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -214,11 +205,9 @@ class RecipeDetailPage extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // 第一行：酒杯与热量并排
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 左侧：酒杯信息 (占据 60% 宽度，因为文字较多)
                   Expanded(
                     flex: 3,
                     child: _buildDetailItem(
@@ -227,20 +216,17 @@ class RecipeDetailPage extends StatelessWidget {
                       glass,
                     ),
                   ),
-                  // 中间分割线
                   Container(
                     height: 40,
                     width: 1,
                     color: Colors.grey.shade200,
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                   ),
-                  // 右侧：热量信息 (占据 40% 宽度)
                   Expanded(
                     flex: 2,
                     child: _buildDetailItem(
                       Icons.local_fire_department_rounded,
                       "Nutrition",
-                      // 正则提取数字: "183 calories" -> "183 kcal"
                       "${nutrition.replaceAll(RegExp(r'[^0-9]'), '')} kcal",
                     ),
                   ),
@@ -252,8 +238,6 @@ class RecipeDetailPage extends StatelessWidget {
                 child: Divider(height: 1, color: Color(0xFFEEEEEE)),
               ),
 
-              // --- 3. 酒精含量列表 (Alcohol List) ---
-              // 放在卡片内部下方，或者独立出来。这里放在内部作为 "Technical Specs"
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -276,7 +260,6 @@ class RecipeDetailPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        // 使用 Wrap 或 Column 渲染列表
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -316,19 +299,18 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // 辅助小组件：用于构建 Glass 和 Nutrition 的单项
   Widget _buildDetailItem(IconData icon, String label, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: Colors.orange), // 主题色图标
+        Icon(icon, size: 20, color: Colors.orange),
         const SizedBox(width: 10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                label, // 标题 (Label)
+                label,
                 style: TextStyle(
                   fontSize: 11,
                   color: Colors.grey.shade500,
@@ -337,7 +319,7 @@ class RecipeDetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                value, // 内容 (Value)
+                value,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -352,7 +334,6 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // 4. 描述文本
   Widget _buildDescription(String description) {
     return Text(
       description,
@@ -360,12 +341,11 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // 5. 配料列表
   Widget _buildIngredientsList(List<String> ingredients) {
     return ListView.separated(
       padding: EdgeInsets.zero,
-      shrinkWrap: true, // 关键：在 ScrollView 中嵌套 ListView
-      physics: const NeverScrollableScrollPhysics(), // 禁止自身滚动
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: ingredients.length,
       separatorBuilder: (context, index) =>
           Divider(height: 1, color: Colors.grey.shade200),
@@ -392,7 +372,6 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // 6. 步骤列表
   Widget _buildStepsList(BuildContext context, List<String> steps) {
     return ListView.builder(
       padding: EdgeInsets.zero,
@@ -449,8 +428,6 @@ class RecipeDetailPage extends StatelessWidget {
     );
   }
 
-  // --- 辅助组件 ---
-
   Widget _buildSectionHeader(
     BuildContext context,
     String title,
@@ -504,7 +481,6 @@ class RecipeDetailPage extends StatelessWidget {
   }
 }
 
-// 为了让 AppBar 上的图标在白色和深色背景下都看清，加一个半透明背景
 class ContainerWithBackground extends StatelessWidget {
   final IconData icon;
   const ContainerWithBackground({super.key, required this.icon});
