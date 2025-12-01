@@ -1,25 +1,96 @@
 import 'package:Kleme/data/recipe_model.dart';
+import 'package:Kleme/data/user_session.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class RecipeDetailPage extends StatelessWidget {
+class RecipeDetailPage extends StatefulWidget {
   final Recipe data;
 
   const RecipeDetailPage({super.key, required this.data});
 
   @override
+  State<RecipeDetailPage> createState() => _RecipeDetailPageState();
+}
+
+class _RecipeDetailPageState extends State<RecipeDetailPage> {
+  bool isFavorited = false;
+  final String baseUrl = "http://localhost:8000";
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfFavorited();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> _checkIfFavorited() async {
+    final userId = UserSession().userId;
+    if (userId == null) return;
+
+    final url = Uri.parse("$baseUrl/favorites/check/$userId/${widget.data.id}");
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          isFavorited = data['is_favorited'];
+        });
+      }
+    } catch (e) {
+      print("Error checking favorite: $e");
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    final userId = UserSession().userId;
+    if (userId == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Please login first")));
+      return;
+    }
+
+    final url = Uri.parse("$baseUrl/favorites/toggle");
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"user_id": userId, "cocktail_id": widget.data.id}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          // 如果后端返回 "added"，则变为 true
+          isFavorited = (data['status'] == 'added');
+        });
+      }
+    } catch (e) {
+      print("Error toggling favorite: $e");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final String title = data.title ?? 'Unknown Recipe';
-    final String imageUrl = data.image ?? '';
-    final String description = data.description ?? '';
-    final List<String> ingredients = List<String>.from(data.ingredients ?? []);
-    final List<String> steps = List<String>.from(data.steps ?? []);
-    final List<String> alcoholInfo = List<String>.from(
-      data.alcoholContent ?? [],
+    final String title = widget.data.title ?? 'Unknown Recipe';
+    final String imageUrl = widget.data.image ?? '';
+    final String description = widget.data.description ?? '';
+    final List<String> ingredients = List<String>.from(
+      widget.data.ingredients ?? [],
     );
-    final String nutrition = data.nutrition ?? '';
-    final String strength = data.strength ?? '';
-    final String sweetSour = data.sweetSour ?? '';
-    final String glass = data.glass ?? '';
+    final List<String> steps = List<String>.from(widget.data.steps ?? []);
+    final List<String> alcoholInfo = List<String>.from(
+      widget.data.alcoholContent ?? [],
+    );
+    final String nutrition = widget.data.nutrition ?? '';
+    final String strength = widget.data.strength ?? '';
+    final String sweetSour = widget.data.sweetSour ?? '';
+    final String glass = widget.data.glass ?? '';
 
     return Scaffold(
       body: CustomScrollView(
@@ -58,8 +129,12 @@ class RecipeDetailPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.favorite_border),
+        onPressed: _toggleFavorite,
+        backgroundColor: Colors.white,
+        child: Icon(
+          isFavorited ? Icons.favorite : Icons.favorite_border,
+          color: isFavorited ? Colors.red : Colors.grey,
+        ),
       ),
     );
   }

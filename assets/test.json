@@ -1,0 +1,65 @@
+{
+  "message": "根据您的口味偏好（7分甜度，7分酒精浓度），为您推荐以下几款饮品：",
+  "recommendations": [
+    {
+      "detail": {
+        "id": "1bb661e7-106b-4d53-8d4a-9f05238c24c4",
+        "title": "21st Century (Difford's recipe)",
+        "description": "Chocolate, in all its forms, from an intense dark block to sweet melted fondue, has had a spell over our taste buds since the Olmec people in Mesoamerica...",
+        "image": "https://cdn.diffordsguide.com/cocktail/AkD4ar/default/0/512x.webp",
+        "ingredients": "[\"45 ml Patrón Reposado tequila\", \"25 ml Dutch Cacao white crème de cacao\", \"20 ml Aromatized wine (e.g. Lillet Blanc)\", \"5 ml Blanc quinquina/kina (e.g. Mattei Cap Corse, Bonal or Kina L'Aér\", \"5 ml Lemon juice (freshly squeezed)\"]",
+        "steps": "[\"Select and pre-chill a COUPE GLASS .\", \"Prepare garnish of orange zest twist.\", \"SHAKE all ingredients with ice.\", \"FINE STRAIN into chilled glass.\", \"EXPRESS orange zest twist over the cocktail and use as garnish.\"]",
+        "glass": "Serve in a Coupe glass",
+        "strength": "7",
+        "sweet_sour": "7",
+        "type": "cocktail",
+        "source_url": "https://www.diffordsguide.com/cocktails/recipe/5085/21st-century-diffords-recipe",
+        "nutrition": "One serving of 21st Century (Difford's recipe) contains 205 calories",
+        "alcohol_content": "[\"1.5 standard drinks\", \"20.89% alc./vol. (41.78° proof)\", \"20.9 grams of pure alcohol\"]"
+      },
+      "name": "21st Century (Difford's recipe)",
+      "description": "以龙舌兰酒为基酒，加入白可可利口酒和芳香葡萄酒，带有巧克力风味和柑橘清新口感",
+      "reason": "完美匹配您的7分甜度和7分酒精浓度要求，口感平衡优雅"
+    },
+    {
+      "detail": {
+        "id": "937d6ce8-0072-45b0-b6ad-db280d6f1378",
+        "title": "21st Century Negroni",
+        "description": "Chinato (pronounced kee-NOT-oh') is an aromatised and fortified wine from Italy's Piedmont region and is traditionally based on Barolo wine, the famous...",
+        "image": "https://cdn.diffordsguide.com/cocktail/rLl35r/default/0/512x.webp",
+        "ingredients": "[\"45 ml Mancino Vermouth di Torino Chinato\", \"30 ml Hayman's London Dry Gin\", \"15 ml Strucchi Red Bitter (Campari-style liqueur)\", \"10 ml Strucchi Bianco Vermouth\", \"2 dash Peychaud's or other Creole-style bitters\"]",
+        "steps": "[\"Select and pre-chill an OLD-FASHIONED GLASS .\", \"Prepare garnish of grapefruit zest twist and orange wedge or slice.\", \"STIR all ingredients with ice.\", \"STRAIN into ice-filled glass (preferably over a large cube or chunk of block ice).\", \"EXPRESS grapefruit zest twist over cocktail and discard.\", \"Garnish with orange wedge or slice.\"]",
+        "glass": "Photographed in an UB Koto Old Fashioned 30cl",
+        "strength": "7",
+        "sweet_sour": "7",
+        "type": "cocktail",
+        "source_url": "https://www.diffordsguide.com/cocktails/recipe/25793/21st-century-negroni",
+        "nutrition": "One serving of 21st Century Negroni contains 235 calories",
+        "alcohol_content": "[\"1.5 standard drinks\", \"20.19% alc./vol. (40.38° proof)\", \"20.3 grams of pure alcohol\"]"
+      },
+      "name": "21st Century Negroni",
+      "description": "现代版尼格罗尼，使用意大利Chinato葡萄酒和伦敦干金酒，带有苦甜平衡的复杂风味",
+      "reason": "甜度与酒精浓度均为7分，适合喜欢苦甜平衡的经典鸡尾酒爱好者"
+    },
+    {
+      "detail": {
+        "id": "a18f201e-127c-4f9f-aad6-ce1163e7c45d",
+        "title": "50:50 Margarita",
+        "description": "All Hallows' Eve, the 31st of October, is spook night with bizarre costumes, trick-or-treat, pumpkin carving, apple bobbing and bonfires all the rage...",
+        "image": "https://cdn.diffordsguide.com/cocktail/A9wPoO/default/0/512x.webp",
+        "ingredients": "[\"25 ml Patrón Reposado tequila\", \"25 ml Patrón Silver blanco tequila\", \"12.5 ml De Kuyper Triple Sec (40%)\", \"12.5 ml Agave syrup\", \"22.5 ml Lime juice (freshly squeezed)\", \"4 drop Difford's Margarita Bitters\"]",
+        "steps": "[\"Select and pre-chill an OLD-FASHIONED GLASS .\", \"RIM glass with salt (moisten outside edge with lime or orange juice and dip into salt).\", \"Prepare garnish of lime wedge.\", \"SHAKE all ingredients with ice.\", \"STRAIN into ice-filled glass.\", \"Garnish with lime wedge.\"]",
+        "glass": "Photographed in an Urban Bar Freddo Old Fashioned",
+        "strength": "7",
+        "sweet_sour": "7",
+        "type": "cocktail",
+        "source_url": "https://www.diffordsguide.com/cocktails/recipe/16859/5050-margarita",
+        "nutrition": "One serving of 50:50 Margarita contains 178 calories",
+        "alcohol_content": "[\"1.3 standard drinks\", \"18.86% alc./vol. (37.72° proof)\", \"18.4 grams of pure alcohol\"]"
+      },
+      "name": "50:50 Margarita",
+      "description": "经典玛格丽特的现代变体，使用陈年和银龙舌兰酒各半，搭配龙舌兰糖浆和青柠汁",
+      "reason": "甜度与酒精浓度均为7分，是平衡度极佳的玛格丽特变体"
+    }
+  ]
+}

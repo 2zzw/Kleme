@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     return ValueListenableBuilder(
       valueListenable: themeNotifier,
       builder: (context, value, child) => MaterialApp(
-        title: 'Flutter Demo',
+        title: 'TR6514 Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.green,

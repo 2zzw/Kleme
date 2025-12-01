@@ -1,4 +1,5 @@
 import 'package:Kleme/views/pages/recipe_page.dart';
+import 'package:Kleme/views/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Kleme/data/notifier.dart';
 import 'package:Kleme/views/pages/favourite_page.dart';
@@ -100,7 +101,36 @@ class _MainHomePageState extends State<MainHomePage> {
           ),
         ],
       ),
-      drawer: const Drawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.green[300]),
+              child: Text(
+                "Menu",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 36),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Settings"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SettingsPage()),
+                );
+              },
+            ),
+            ListTile(leading: Icon(Icons.info), title: Text("About")),
+          ],
+        ),
+      ),
       body: ListView(
         children: [
           Container(

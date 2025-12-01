@@ -1,3 +1,4 @@
+import 'package:Kleme/views/pages/email_auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Kleme/views/widget_tree.dart';
 import 'package:lottie/lottie.dart';
@@ -89,9 +90,10 @@ class LoginPage extends StatelessWidget {
                     _buildLoginButton(
                       icon: Icons.email_outlined,
                       text: "Email",
-                      backgroundColor: Color.fromARGB(255, 51, 113, 78),
+                      backgroundColor: const Color.fromARGB(255, 51, 113, 78),
                       textColor: Colors.white,
                       context: context,
+                      isEmailLogin: true, // 增加一个标志位来区分逻辑
                     ),
 
                     const SizedBox(height: 12),
@@ -142,16 +144,26 @@ class LoginPage extends StatelessWidget {
     Color textColor = Colors.black,
     BorderSide? border,
     required BuildContext context,
+    bool isEmailLogin = false, // 新增参数
   }) {
     return SizedBox(
       width: double.infinity,
       height: 52,
       child: OutlinedButton(
         onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const WidgetTree()),
-          );
+          if (isEmailLogin) {
+            // 如果是点击 Email，跳转到输入页面
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const EmailAuthPage()),
+            );
+          } else {
+            // 其他社交登录逻辑（目前只是直接进主页）
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const WidgetTree()),
+            );
+          }
         },
         style: OutlinedButton.styleFrom(
           backgroundColor: backgroundColor,

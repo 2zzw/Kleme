@@ -25,10 +25,6 @@ class _WidgetTreeState extends State<WidgetTree> {
           builder: (context, value, child) => pages.elementAt(value),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
       bottomNavigationBar: const NavbarWidget(),
     );
   }

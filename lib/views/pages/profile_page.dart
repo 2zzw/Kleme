@@ -25,14 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 MaterialPageRoute(builder: (_) => const SettingsPage()),
               );
             },
-            // icon: ValueListenableBuilder(
-            //   valueListenable: themeNotifier,
-            //   builder: (context, value, child) =>
-            //       Icon(value ? Icons.dark_mode : Icons.light_mode),
-            // ),
-            // onPressed: () {
-            //   themeNotifier.value = !themeNotifier.value;
-            // },
           ),
         ],
       ),
@@ -123,7 +115,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 40),
           ],
         ),
