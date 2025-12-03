@@ -32,6 +32,7 @@ class Recipe {
       id: json['id']?.toString() ?? '',
       title: json['title']?.toString() ?? 'Unknown',
       image: json['image']?.toString() ?? '',
+      type: json['type']?.toString() ?? '',
       strength: json['strength']?.toString() ?? '',
       sweetSour: json['sweet_sour']?.toString() ?? '',
       alcoholContent: _safeParseList(json['alcohol_content']),

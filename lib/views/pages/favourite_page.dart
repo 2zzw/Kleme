@@ -1,4 +1,6 @@
+import 'package:Kleme/data/recipe_model.dart';
 import 'package:Kleme/data/user_session.dart';
+import 'package:Kleme/views/pages/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,7 +23,6 @@ class _FavouritePageState extends State<FavouritePage> {
     _fetchFavorites();
   }
 
-  // 拉取当前用户的所有收藏
   Future<void> _fetchFavorites() async {
     final userId = UserSession().userId;
     if (userId == null) {
@@ -33,7 +34,8 @@ class _FavouritePageState extends State<FavouritePage> {
       final response = await http.get(Uri.parse("$baseUrl/favorites/$userId"));
       if (response.statusCode == 200) {
         setState(() {
-          allFavorites = jsonDecode(response.body);
+          final List<dynamic> data = jsonDecode(response.body);
+          allFavorites = data.map((json) => Recipe.fromJson(json)).toList();
           isLoading = false;
         });
       }
@@ -43,18 +45,11 @@ class _FavouritePageState extends State<FavouritePage> {
     }
   }
 
-  // 辅助函数：根据类型过滤列表
   Widget _buildListForCategory(String categoryType) {
     if (isLoading) return const Center(child: CircularProgressIndicator());
-
-    // 过滤数据 (注意：你的数据库里存的是 "Cocktail", "Milk Tea" 还是 "Bubble Tea"?
-    // 这里要和数据库字段 type 对应，假设数据库存的是 "Cocktail", "Tea", "Coffee")
-    // 这里假设数据库的 type 字段和你的 Tab 文字有对应关系
     final filteredList = allFavorites.where((item) {
-      // 这里做一个简单的模糊匹配或精确匹配
-      return item['type'] == categoryType ||
-          (categoryType == 'Milk Tea' &&
-              item['type'].toString().contains('Tea'));
+      return item.type == categoryType ||
+          (categoryType == 'Milk Tea' && item.type.toString().contains('Tea'));
     }).toList();
 
     if (filteredList.isEmpty) {
@@ -67,16 +62,21 @@ class _FavouritePageState extends State<FavouritePage> {
         final item = filteredList[index];
         return ListTile(
           leading: Image.network(
-            item['image'] ?? '',
+            item.image ?? '',
             width: 50,
             height: 50,
             fit: BoxFit.cover,
           ),
-          title: Text(item['title']),
-          subtitle: Text(item['type']),
+          title: Text(item.title),
+          subtitle: Text(item.type),
           trailing: const Icon(Icons.favorite, color: Colors.red),
           onTap: () {
-            // 点击跳转详情页逻辑...
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RecipeDetailPage(data: item),
+              ),
+            );
           },
         );
       },
@@ -109,7 +109,7 @@ class _FavouritePageState extends State<FavouritePage> {
         body: TabBarView(
           children: [
             _buildListForCategory('cocktail'),
-            _buildListForCategory('milk tea'), // 确保这个名字能匹配到数据库里的 type
+            _buildListForCategory('milk tea'),
             _buildListForCategory('coffee'),
           ],
         ),
