@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:Kleme/views/pages/settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,11 +14,106 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String _currentAddress = "";
+  Position? _currentPosition;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+  }
+
+  Future<void> _getUserLocation() async {
+    setState(() => _isLoading = true);
+
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        setState(() => _currentAddress = "location failed");
+        return;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() => _currentAddress = "permission denied");
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        setState(() => _currentAddress = "permission denied");
+        return;
+      }
+
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
+      );
+
+      _currentPosition = position;
+
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks[0];
+          String address = place.subLocality ?? '';
+          if (address.trim().isEmpty) {
+            address = place.administrativeArea ?? '';
+          }
+
+          setState(() {
+            _currentAddress = address.trim();
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _currentAddress =
+              "${position.latitude.toStringAsFixed(2)}, ${position.longitude.toStringAsFixed(2)}";
+        });
+      }
+    } catch (e) {
+      setState(() => _currentAddress = "location error");
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _openMap() async {
+    if (_currentPosition == null) {
+      await _getUserLocation();
+      return;
+    }
+
+    final double lat = _currentPosition!.latitude;
+    final double long = _currentPosition!.longitude;
+
+    final Uri googleMapsUrl = Uri.parse(
+      "https://www.google.com/maps/search/?api=1&query=$lat,$long",
+    );
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('open map failed')));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -27,6 +125,38 @@ class _ProfilePageState extends State<ProfilePage> {
             },
           ),
         ],
+        leadingWidth: 126,
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 2, 0, 0),
+          child: GestureDetector(
+            onTap: _openMap,
+            child: Row(
+              children: [
+                const SizedBox(width: 4),
+                _isLoading
+                    ? const SizedBox(
+                        width: 12,
+                        height: 12,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(
+                        _currentAddress,
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                if (!_isLoading)
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 10,
+                    color: Colors.grey,
+                  ),
+              ],
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -57,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   Text(
                     'Litchy@gmail.com',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
 
                   const SizedBox(height: 16),
@@ -140,7 +270,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // 设置项
   Widget _buildSettingItem(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon, color: Colors.green),

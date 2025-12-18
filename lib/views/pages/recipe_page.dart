@@ -244,7 +244,7 @@ class RecipeCard extends StatelessWidget {
                           Icon(Icons.broken_image, color: Colors.grey),
                           SizedBox(height: 4),
                           Text(
-                            "无法加载",
+                            "load failed",
                             style: TextStyle(color: Colors.grey, fontSize: 10),
                           ),
                         ],
